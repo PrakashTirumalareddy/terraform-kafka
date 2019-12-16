@@ -13,6 +13,15 @@ resource "aws_instance" "kafka-instance-zookeeper-1" {
     cluster = "zookeeper"
   }
   vpc_security_group_ids = [aws_security_group.kafka_public_sg.id]
+  ebs_block_device {
+    device_name = "/dev/sdh"
+    volume_size = "20"
+  }
+
+  ebs_block_device {
+    device_name = "/dev/sdj"
+    volume_size = "20"
+  }
 }
 
 resource "aws_instance" "kafka-instance-zookeeper-2" {
@@ -29,7 +38,18 @@ resource "aws_instance" "kafka-instance-zookeeper-2" {
     cluster = "zookeeper"
   }
   vpc_security_group_ids = [aws_security_group.kafka_public_sg.id]
+  ebs_block_device {
+    device_name = "/dev/sdh"
+    volume_size = "20"
+  }
+
+  ebs_block_device {
+    device_name = "/dev/sdj"
+    volume_size = "20"
+  }
 }
+
+
 
 resource "aws_instance" "kafka-instance-zookeeper-3" {
   ami                         = var.ec2_zookeeper_AMI
@@ -45,5 +65,13 @@ resource "aws_instance" "kafka-instance-zookeeper-3" {
     cluster = "zookeeper"
   }
   vpc_security_group_ids = [aws_security_group.kafka_public_sg.id]
+  ebs_block_device {
+    device_name = "/dev/sdh"
+    volume_size = "20"
+  }
 
+  ebs_block_device {
+    device_name = "/dev/sdj"
+    volume_size = "20"
+  }
 }

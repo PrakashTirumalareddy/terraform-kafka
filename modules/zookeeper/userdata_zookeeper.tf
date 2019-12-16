@@ -2,6 +2,7 @@ locals {
   userdata_zookeeper = <<USERDATA
 #!/bin/bash
 set -o xtrace
+sudo mount -a
 sudo sysctl -w vm.max_map_count=262144
 sudo sysctl -w fs.file-max=65536
 sudo sysctl -w vm.swappiness=1
@@ -11,20 +12,33 @@ ${var.ec2_zookeeper1_private_ip} zookeeper1
 ${var.ec2_zookeeper2_private_ip}  zookeeper2
 ${var.ec2_zookeeper3_private_ip}  zookeeper3
 EOF
-sudo apt-get update -y 
-sudo apt-get install -y wget ca-certificates zip net-tools vim nano tar netcat nmap-ncat
-sudo apt-get install -y openjdk-8-jdk
+sudo apt-get -qq update -y 
+sudo apt-get -qq install -y wget ca-certificates zip net-tools vim nano tar netcat nmap-ncat
+sudo apt-get -qq install -y openjdk-8-jdk
+sudo mkfs -t ext4 /dev/xvdh
+sudo mkdir /dataz
+sudo mount /dev/xvdh /dataz/
+sudo mkfs -t ext4 /dev/xvdj
+sudo mkdir /logs
+sudo mount /dev/xvdj /logs/
+sudo cat >> /etc/fstab <<EOF
+/dev/xvdh       /dataz   ext4    defaults,nofail        0       0
+/dev/xvdj       /logs   ext4    defaults,nofail        0       0
+EOF
 sudo adduser zookeeper
 usermod -aG sudo zookeeper
-sudo mkdir -p /data/zookeeper
-sudo chown -R zookeeper:zookeeper /data
-sudo wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz
-sudo tar -xvzf zookeeper-3.4.9.tar.gz
+sudo mkdir -p /dataz/zookeeper
+sudo chown -R zookeeper:zookeeper /dataz
+sudo mkdir -p /logs/zookeeper
+sudo chown -R zookeeper:zookeeper /logs
+sudo wget -q https://archive.apache.org/dist/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz
+sudo tar -xzf zookeeper-3.4.9.tar.gz
 sudo mv zookeeper-3.4.9 zookeeper
 sudo mv zookeeper /opt
 sudo chown -R zookeeper:zookeeper /opt/zookeeper
 sudo cat > /opt/zookeeper/conf/zoo.cfg <<EOF
-dataDir=/data/zookeeper
+dataDir=/dataz/zookeeper
+dataLogDir=/logs/zookeeper
 clientPort=2181
 maxClientCnxns=0
 tickTime=2000
@@ -63,21 +77,21 @@ USERDATA
 
   userdata_zookeeper1 = join("\n", [
     local.userdata_zookeeper,
-    "echo \"1\" > /data/zookeeper/myid",
-    "sudo chown  zookeeper:zookeeper /data/zookeeper/myid ",
+    "echo \"1\" > /dataz/zookeeper/myid",
+    "sudo chown  zookeeper:zookeeper /dataz/zookeeper/myid ",
     "systemctl start zookeeper"
   ])
   userdata_zookeeper2 = join("\n", [
     local.userdata_zookeeper,
-    "echo \"2\" > /data/zookeeper/myid",
-    "sudo chown  zookeeper:zookeeper /data/zookeeper/myid ",
+    "echo \"2\" > /dataz/zookeeper/myid",
+    "sudo chown  zookeeper:zookeeper /dataz/zookeeper/myid ",
     "systemctl start zookeeper"
   ])
   userdata_zookeeper3 = join("\n", [
     local.userdata_zookeeper,
-    "echo \"3\" > /data/zookeeper/myid",
-    "sudo chown  zookeeper:zookeeper /data/zookeeper/myid ",
-    "systemctl start zookeeper"
+    "echo \"3\" > /dataz/zookeeper/myid",
+    "sudo chown  zookeeper:zookeeper /dataz/zookeeper/myid ",
+    "systemctl start zookeeper",
   ])
 
 }
