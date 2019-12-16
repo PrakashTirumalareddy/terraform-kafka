@@ -68,3 +68,24 @@ variable "ec2_zookeeper_key_name" {
   description = "Key Pair name for zookeepers Instances"
   default     = "cratedb-key"
 }
+
+variable "ec2_monitoring_private_ip" {
+  description = "Ip of the monitoring node 1"
+  default     = "200.0.0.12"
+}
+
+
+variable "ec2_monitoring_AMI" {
+  description = "AMI used for monitoring Instances"
+  default     = "ami-04b9e92b5572fa0d1"
+}
+
+variable "ec2_monitoring_instance_type" {
+  description = "Instance type for monitoring Instances"
+  default     = "t2.micro"
+}
+
+variable "ec2_monitoring_key_name" {
+  description = "Key Pair name for monitoring Instances"
+  default     = "cratedb-key"
+}
