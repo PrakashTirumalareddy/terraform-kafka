@@ -11,6 +11,9 @@ sudo cat >> /etc/hosts <<EOF
 ${var.ec2_zookeeper1_private_ip} zookeeper1
 ${var.ec2_zookeeper2_private_ip}  zookeeper2
 ${var.ec2_zookeeper3_private_ip}  zookeeper3
+${var.ec2_kafka1_private_ip} kafka1
+${var.ec2_kafka2_private_ip}  kafka2
+${var.ec2_kafka3_private_ip}  kafka3
 EOF
 sudo apt-get -qq update -y 
 sudo apt-get -qq install -y wget ca-certificates zip net-tools vim nano tar netcat nmap-ncat

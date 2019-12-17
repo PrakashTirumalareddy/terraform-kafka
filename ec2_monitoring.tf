@@ -9,7 +9,7 @@ resource "aws_instance" "kafka-instance-monitoring" {
   associate_public_ip_address = true
   tags = {
     Name    = "terraform-monitoring"
-    cluster = "zookeeper"
+    cluster = "monitoring"
   }
   vpc_security_group_ids = [aws_security_group.kafka_monitoring_sg.id]
 }

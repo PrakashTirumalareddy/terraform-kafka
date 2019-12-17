@@ -89,3 +89,33 @@ variable "ec2_monitoring_key_name" {
   description = "Key Pair name for monitoring Instances"
   default     = "cratedb-key"
 }
+
+variable "ec2_kafka1_private_ip" {
+  description = "Ip of the kafka node 1"
+  default     = "200.0.0.9"
+}
+
+variable "ec2_kafka2_private_ip" {
+  description = "Ip of the kafka node 2"
+  default     = "200.0.16.9"
+}
+
+variable "ec2_kafka3_private_ip" {
+  description = "Ip of the kafka node 3"
+  default     = "200.0.32.9"
+}
+
+variable "ec2_kafka_AMI" {
+  description = "AMI used for kafkas Instances"
+  default     = "ami-04b9e92b5572fa0d1"
+}
+
+variable "ec2_kafka_instance_type" {
+  description = "Instance type for kafkas Instances"
+  default     = "t2.small"
+}
+
+variable "ec2_kafka_key_name" {
+  description = "Key Pair name for kafkas Instances"
+  default     = "cratedb-key"
+}

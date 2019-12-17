@@ -1,6 +1,6 @@
 # Setup for IAM role needed to setup an ec2 cluster logs
 resource "aws_iam_role" "tf-ec2-master" {
-  name = "terraform-ec2-cluster"
+  name = "kafka-cluster"
 
   assume_role_policy = <<POLICY
 {
@@ -19,7 +19,7 @@ POLICY
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "ec2_profile"
+  name = "kafka_profile"
   role = aws_iam_role.tf-ec2-master.name
 }
 
