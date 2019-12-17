@@ -49,9 +49,22 @@ services:
     environment:
       SERVER_HTTP_PORT: 9001
     restart: always
-
 EOF
 docker-compose -f ~/zoonavigator-docker-compose.yml up -d
+sudo cat > ~/kafka-manager-docker-compose.yml <<EOF
+version: '2'
+
+services:
+  # https://github.com/yahoo/kafka-manager
+  kafka-manager:
+    image: qnib/plain-kafka-manager
+    network_mode: host
+    environment:
+      ZOOKEEPER_HOSTS: "zookeeper1:2181,zookeeper2:2181,zookeeper3:2181"
+      APPLICATION_SECRET: P@ssw0rd
+    restart: always
+EOF
+docker-compose -f ~/kafka-manager-docker-compose.yml up -d
 USERDATA
 
 }

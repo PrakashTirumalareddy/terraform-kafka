@@ -2,7 +2,9 @@
 Terraform script to run a Kafka Cluster on AWS. This project will create:
 - Zookeeper Cluster with 3 instances
 - Kafka Cluster with 3 instances
-- Monitoring instance using docker.
+- Monitoring instance using docker:
+ - Zookeeper Monitor (http://<monitoring_ip>:8001)
+ - Kafka Manager (http://<monitoring_ip>:9000)
 
 ## Prerequisites
 
@@ -51,4 +53,11 @@ To execute the changes:
 terraform apply -input=false "planfile" 
 ```
 
+The infrastructure will return the monitoring instance IP for access:
+```sh
+Apply complete! Resources: 0 added, 2 changed, 0 destroyed.
 
+Outputs:
+
+monitoring_ip = 3.94.78.122
+```
