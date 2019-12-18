@@ -14,6 +14,16 @@ resource "aws_instance" "kafka-instance-monitoring" {
   vpc_security_group_ids = [aws_security_group.kafka_monitoring_sg.id]
 }
 
+resource "aws_eip" "kafka-instance-monitoring" {
+  vpc = true
+}
+
+resource "aws_eip_association" "kafka-instance-monitoring" {
+  instance_id   = aws_instance.kafka-instance-monitoring.id
+  allocation_id = aws_eip.kafka-instance-monitoring.id
+}
+
+
 #  Instance Security group
 resource "aws_security_group" "kafka_monitoring_sg" {
   name   = "kafka_monitoring_sg"
@@ -37,6 +47,27 @@ resource "aws_security_group" "kafka_monitoring_sg" {
 ingress {
     from_port = 9000
     to_port   = 9000
+    protocol  = "tcp"
+    cidr_blocks = [
+    "0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8000
+    to_port   = 8000
+    protocol  = "tcp"
+    cidr_blocks = [
+    "0.0.0.0/0"]
+  }
+    ingress {
+    from_port = 8081
+    to_port   = 8081
+    protocol  = "tcp"
+    cidr_blocks = [
+    "0.0.0.0/0"]
+  }
+    ingress {
+    from_port = 8082
+    to_port   = 8082
     protocol  = "tcp"
     cidr_blocks = [
     "0.0.0.0/0"]

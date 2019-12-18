@@ -5,6 +5,8 @@ Terraform script to run a Kafka Cluster on AWS. This project will create:
 - Monitoring instance using docker:
  - Zookeeper Monitor (http://<monitoring_ip>:8001)
  - Kafka Manager (http://<monitoring_ip>:9000)
+ - Kafka Topic UI (http://<monitoring_ip>:8000)
+ - Confluent Schema Registry (http://<monitoring_ip>:8081)
 
 ## Prerequisites
 
